@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24-oct-2018 21:51:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="persistencia.Factura" table="factura" catalog="facturacion" optimistic-lock="version">
+        <id name="idFactura" type="java.lang.Integer">
+            <column name="id_factura" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="persistencia.Cliente" fetch="select">
+            <column name="id_cliente" not-null="true" />
+        </many-to-one>
+        <many-to-one name="modoPago" class="persistencia.ModoPago" fetch="select">
+            <column name="id_pago" not-null="true" />
+        </many-to-one>
+        <property name="fechaFactura" type="string">
+            <column name="fecha_factura" length="20" />
+        </property>
+        <set name="detalles" table="detalle" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_factura" not-null="true" />
+            </key>
+            <one-to-many class="persistencia.Detalle" />
+        </set>
+    </class>
+</hibernate-mapping>

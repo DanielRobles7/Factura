@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24-oct-2018 21:51:40 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="persistencia.Cliente" table="cliente" catalog="facturacion" optimistic-lock="version">
+        <id name="idCliente" type="java.lang.Integer">
+            <column name="id_cliente" />
+            <generator class="identity" />
+        </id>
+        <property name="nombreCliente" type="string">
+            <column name="nombre_cliente" length="40" />
+        </property>
+        <property name="apellidoCliente" type="string">
+            <column name="apellido_cliente" length="40" />
+        </property>
+        <property name="direccionCliente" type="string">
+            <column name="direccion_cliente" length="100" />
+        </property>
+        <property name="fechaNacimiento" type="string">
+            <column name="fecha_nacimiento" length="20" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="20" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="50" />
+        </property>
+        <set name="facturas" table="factura" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id_cliente" not-null="true" />
+            </key>
+            <one-to-many class="persistencia.Factura" />
+        </set>
+    </class>
+</hibernate-mapping>
