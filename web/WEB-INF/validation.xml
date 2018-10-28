@@ -45,9 +45,9 @@ Contributor(s):
 
 <form-validation>
 
-<!--
-     This is a minimal Validator form file with a couple of examples.
--->
+    <!--
+         This is a minimal Validator form file with a couple of examples.
+    -->
 
     <global>
 
@@ -61,22 +61,35 @@ Contributor(s):
     </global>
 
     <formset>
-
+        <form name="CategoriaActionForm">
+            <field  property="nombre"
+                    depends="required">
+                <arg name="required" key="guardar.nombre.necesario"/>
+            </field>
+            <field
+                property="descripcion"
+                depends="required">
+                <arg key="CategoriaActionForm.direccion"/>
+            </field>
+        </form>
+    </formset>
+    
+    <formset>
         <!-- An example form -->
         <form name="logonForm">
             <field
                 property="username"
                 depends="required">
-                    <arg key="logonForm.username"/>
+                <arg key="logonForm.username"/>
             </field>
             <field
                 property="password"
                 depends="required,mask">
-                    <arg key="logonForm.password"/>
-                    <var>
-                        <var-name>mask</var-name>
-                        <var-value>^[0-9a-zA-Z]*$</var-value>
-                    </var>
+                <arg key="logonForm.password"/>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[0-9a-zA-Z]*$</var-value>
+                </var>
             </field>
         </form>
 
@@ -95,19 +108,19 @@ Contributor(s):
             <field
                 property="username"
                 depends="required">
-                    <arg key="logonForm.username"/>
+                <arg key="logonForm.username"/>
             </field>
             <field
                 property="password"
                 depends="required,mask">
-                    <arg key="logonForm.password"/>
-                    <var>
-                        <var-name>mask</var-name>
-                        <var-value>^[0-9a-zA-Z]*$</var-value>
-                    </var>
+                <arg key="logonForm.password"/>
+                <var>
+                    <var-name>mask</var-name>
+                    <var-value>^[0-9a-zA-Z]*$</var-value>
+                </var>
             </field>
         </form>
 
-   </formset>
+    </formset>
 
 </form-validation>

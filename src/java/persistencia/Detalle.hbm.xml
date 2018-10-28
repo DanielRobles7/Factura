@@ -20,5 +20,8 @@
         <property name="precio" type="java.lang.Double">
             <column name="precio" precision="6" />
         </property>
+        <property name="total" type="java.lang.Double">
+            <column name="total" precision="6" />
+        </property>
     </class>
 </hibernate-mapping>

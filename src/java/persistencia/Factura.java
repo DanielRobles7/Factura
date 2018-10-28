@@ -15,6 +15,7 @@ public class Factura  implements java.io.Serializable {
      private Cliente cliente;
      private ModoPago modoPago;
      private String fechaFactura;
+     private Double totalFactura;
      private Set detalles = new HashSet(0);
 
     public Factura() {
@@ -25,11 +26,12 @@ public class Factura  implements java.io.Serializable {
         this.cliente = cliente;
         this.modoPago = modoPago;
     }
-    public Factura(Cliente cliente, ModoPago modoPago, String fechaFactura, Set detalles) {
+    public Factura(Cliente cliente, ModoPago modoPago, String fechaFactura, Double totalFactura, Set detalles) {
        this.cliente = cliente;
        this.modoPago = modoPago;
        this.fechaFactura = fechaFactura;
        this.detalles = detalles;
+       this.totalFactura = totalFactura;
     }
    
     public Integer getIdFactura() {
@@ -66,6 +68,14 @@ public class Factura  implements java.io.Serializable {
     
     public void setDetalles(Set detalles) {
         this.detalles = detalles;
+    }
+
+    public Double getTotalFactura() {
+        return totalFactura;
+    }
+
+    public void setTotalFactura(Double totalFactura) {
+        this.totalFactura = totalFactura;
     }
 
 

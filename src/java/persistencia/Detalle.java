@@ -14,6 +14,7 @@ public class Detalle  implements java.io.Serializable {
      private Producto producto;
      private Integer cantidad;
      private Double precio;
+     private Double total;
 
     public Detalle() {
     }
@@ -23,11 +24,12 @@ public class Detalle  implements java.io.Serializable {
         this.factura = factura;
         this.producto = producto;
     }
-    public Detalle(Factura factura, Producto producto, Integer cantidad, Double precio) {
+    public Detalle(Factura factura, Producto producto, Integer cantidad, Double precio, Double total) {
        this.factura = factura;
        this.producto = producto;
        this.cantidad = cantidad;
        this.precio = precio;
+       this.total = total;
     }
    
     public Integer getIdDetalle() {
@@ -66,6 +68,15 @@ public class Detalle  implements java.io.Serializable {
         this.precio = precio;
     }
 
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+    
+    
 
 
 

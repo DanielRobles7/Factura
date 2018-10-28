@@ -7,6 +7,7 @@ package mantenimiento;
 
 import com.myapp.struts.HibernateUtil;
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -138,5 +139,26 @@ public class ModoPagoMan {
             session.close();
         }
         return cat;
+    }
+    public int consultarExistencia(String nombre) {
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        Session session = factory.openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("from ModoPago a "
+                    + "where a.nombreModoPago=:nombre");
+            query.setParameter("nombre", nombre);
+            List<ModoPago> list = query.list();
+            if (list.size() > 0) {
+                session.clear();
+                return 0;
+            }
+            session.close();
+            return 1;
+        } catch (HibernateException e) {
+            session.close();
+            System.out.println("Error consulta existencia ModoPago " + e);
+            return 0;
+        }
     }
 }

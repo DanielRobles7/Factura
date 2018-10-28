@@ -23,7 +23,8 @@ public class FacturaMan {
     public int guardar(
             Integer idCliente,
             String fechaFactura,
-            Integer idPago
+            Integer idPago,
+            Double totalFactura
     ) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
@@ -36,10 +37,12 @@ public class FacturaMan {
         fac.setCliente(cli);
         //----------------------------
         fac.setFechaFactura(fechaFactura);
+        fac.setTotalFactura(totalFactura);
         //----------------------------
         ModoPago mod = new ModoPago();
         mod.setIdPago(idPago);
         fac.setModoPago(mod);
+        
         
         try {
             session.beginTransaction();
@@ -63,7 +66,8 @@ public class FacturaMan {
             Integer idFactura,
             Integer idCliente,
             String fechaFactura,
-            Integer idPago
+            Integer idPago,
+            Double totalFactura
     ) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
@@ -77,6 +81,7 @@ public class FacturaMan {
         fac.setCliente(cli);
         //----------------------------
         fac.setFechaFactura(fechaFactura);
+        fac.setTotalFactura(totalFactura);
         //----------------------------
         ModoPago mod = new ModoPago();
         mod.setIdPago(idPago);
@@ -161,6 +166,35 @@ public class FacturaMan {
             session.close();
         }
         return fac;
+    }
+    public List maxFactura() {
+         List<Factura> listaI = null;
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        Session session = factory.openSession();
+       
+        session.beginTransaction();
+        try {
+             Query q   =  session.createQuery("select max(idFactura) from Factura");
+         listaI = (List<Factura>) q.list();
+            System.out.println(listaI.get(0));
+            System.out.println("Consultar max Factura Correcto");
+        } catch (Exception e) {
+            System.out.println("Error consultar max id Factura. "+e);
+        } finally {
+            session.close();
+        }
+        
+        return listaI ;
+    }
+    public int maxIdFactura(){
+        FacturaMan fmam = new FacturaMan();
+        int idFactura = 0; 
+        List<Factura> fe = fmam.consultarTodos();
+        if (fe.size()>0) {
+            List<Integer> lista = fmam.maxFactura();
+        idFactura = lista.get(0);
+        }
+        return idFactura;
     }
     
 }

@@ -7,6 +7,7 @@ package mantenimiento;
 
 import com.myapp.struts.HibernateUtil;
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,7 +25,8 @@ public class DetalleMan {
             Integer idFactura,
             Integer idProducto,
             int cantidad,
-            Double precio
+            Double precio,
+            Double total
     ) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
@@ -42,6 +44,7 @@ public class DetalleMan {
         //----------------------------
         det.setCantidad(cantidad);
         det.setPrecio(precio);
+        det.setTotal(total);
         
         try {
             session.beginTransaction();
@@ -66,7 +69,8 @@ public class DetalleMan {
             Integer idFactura,
             Integer idProducto,
             int cantidad,
-            Double precio
+            Double precio,
+            Double total
     ) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
@@ -85,6 +89,7 @@ public class DetalleMan {
         //----------------------------
         det.setCantidad(cantidad);
         det.setPrecio(precio);
+        det.setTotal(total);
         
         try {
             session.beginTransaction();
@@ -165,5 +170,29 @@ public class DetalleMan {
             session.close();
         }
         return det;
+    }
+    public List consultaDetalleEspecifico (Integer idFactura){
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        Session session = factory.openSession();
+        try {
+            session.beginTransaction();
+            Query q = session.createQuery("from Detalle f where f.factura.idFactura=:idFactura");
+            q.setParameter("idFactura", idFactura);
+            List<Detalle> list = q.list();
+            if (list.size()>0) {
+                return list;
+            }
+            session.close();
+            return null;
+        } catch (HibernateException e) {
+            session.close();
+            System.out.println("Error en consultar Detalle "+e);
+            return null;
+        }
+    }
+    public static void main(String[] args) {
+        DetalleMan dman = new DetalleMan();
+        List<Detalle> ld = dman.consultaDetalleEspecifico(8);
+        System.out.println("ver "+ld.toString());
     }
 }

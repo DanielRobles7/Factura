@@ -17,6 +17,9 @@
         <property name="fechaFactura" type="string">
             <column name="fecha_factura" length="20" />
         </property>
+        <property name="totalFactura" type="java.lang.Double">
+            <column name="total_factura" precision="6" />
+        </property>
         <set name="detalles" table="detalle" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="id_factura" not-null="true" />

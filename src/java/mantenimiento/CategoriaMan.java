@@ -7,6 +7,7 @@ package mantenimiento;
 
 import com.myapp.struts.HibernateUtil;
 import java.util.List;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,23 +18,6 @@ import persistencia.Categoria;
  * @author DanyDanny
  */
 public class CategoriaMan {
-
-    public static void main(String[] args) {
-        CategoriaMan cman = new CategoriaMan();
-
-        Integer idCategoria = 3;
-        String nombre = "higiene personal";
-        String descripcion = "productos de higiene personal";
-        
-        //cman.guardar(nombre, descripcion);
-        //cman.eliminar(idCategoria);
-        //cman.modificar(idCategoria, nombre, descripcion);
-        //cman.consultarId(idCategoria);
-        //cman.consultarTodos();
-        
-        System.exit(0);
-
-    }
 
     public int guardar(
             String nombre,
@@ -158,5 +142,26 @@ public class CategoriaMan {
             session.close();
         }
         return cat;
+    }
+    public int consultarExistencia(String nombre) {
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        Session session = factory.openSession();
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("from Categoria a "
+                    + "where a.nombre=:nombre");
+            query.setParameter("nombre", nombre);
+            List<Categoria> list = query.list();
+            if (list.size() > 0) {
+                session.clear();
+                return 0;
+            }
+            session.close();
+            return 1;
+        } catch (HibernateException e) {
+            session.close();
+            System.out.println("Error consulta existencia categoria " + e);
+            return 0;
+        }
     }
 }

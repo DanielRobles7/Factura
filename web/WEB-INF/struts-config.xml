@@ -7,6 +7,19 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="CategoriaActionForm" type="actionForm.CategoriaActionForm"/>
+        <form-bean name="CategoriaActionForm" type="other.CategoriaActionForm"/>
+        <!-- CATEGORIA    -->
+        <form-bean name="CategoriaActionForm" type="actionForm.CategoriaActionForm"/>
+        <!-- CLIENTE      -->
+        <form-bean name="ClienteActionForm" type="actionForm.ClienteActionForm"/>
+        <!-- FACTURA      -->
+        <form-bean name="FacturaActionForm" type="actionForm.FacturaActionForm"/>
+        <!-- MODO DE PAGO -->
+        <form-bean name="ModoPagoActionForm" type="actionForm.ModoPagoActionForm"/>
+        <!-- PRODUCTO     -->
+        <form-bean name="ProductoActionForm" type="actionForm.ProductoActionForm"/>
+        
     
     </form-beans>
     
@@ -15,10 +28,59 @@
     </global-exceptions>
 
     <global-forwards>
-        <forward name="welcome"  path="/Welcome.do"/>
+        <!-- CATEGORIA    -->
+        <forward name="agregarCat"      path="/jsp/categoria/guardar.jsp"/>
+        <forward name="modificarCat"    path="/jsp/categoria/modificar.jsp"/>
+        <forward name="listaCat"        path="/jsp/categoria/lista.jsp"/>
+        <!-- CLIENTE      -->
+        <forward name="agregarCli"      path="/jsp/cliente/guardar.jsp"/>
+        <forward name="modificarCli"    path="/jsp/cliente/modificar.jsp"/>
+        <forward name="listaCli"        path="/jsp/cliente/lista.jsp"/>
+        <!-- FACTURA      -->
+        <forward name="agregarFac"      path="/jsp/factura/guardar.jsp"/>
+        <forward name="modificarFac"    path="/jsp/factura/modificar.jsp"/>
+        <forward name="listaFac"        path="/jsp/factura/lista.jsp"/>
+        <!-- MODO DE PAGO -->
+        <forward name="agregarMod"      path="/jsp/modoPago/guardar.jsp"/>
+        <forward name="modificarMod"    path="/jsp/modoPago/modificar.jsp"/>
+        <forward name="listaMod"        path="/jsp/modoPago/lista.jsp"/>
+        <!-- PRODUCTO     -->
+        <forward name="agregarPro"      path="/jsp/producto/guardar.jsp"/>
+        <forward name="modificarPro"    path="/jsp/producto/modificar.jsp"/>
+        <forward name="listaPro"        path="/jsp/producto/lista.jsp"/>
     </global-forwards>
 
     <action-mappings>
+        <!-- <action input="/" name="CategoriaActionForm" path="/categoria" scope="request" type="action.CategoriaAction"/> -->
+        
+        <!-- CATEGORIA    -->
+        <action name="CategoriaActionForm" 
+                path="/categoria" 
+                scope="request" 
+                type="action.CategoriaAction"/>
+        <!-- CLIENTE      -->
+        <action name="ClienteActionForm" 
+                path="/cliente" 
+                scope="request" 
+                type="action.ClienteAction"/>
+        <!-- FACTURA      -->
+        <action name="FacturaActionForm" 
+                path="/factura" 
+                scope="request" 
+                type="action.FacturaAction"/>
+        <!-- MODO DE PAGO -->
+        <action name="ModoPagoActionForm" 
+                path="/modoPago" 
+                scope="request" 
+                type="action.ModoPagoAction"/>
+        <!-- PRODUCTO     -->
+        <action name="ProductoActionForm" 
+                path="/producto" 
+                scope="request" 
+                type="action.ProductoAction"/>
+        
+        
+        
         <action path="/Welcome" forward="/welcomeStruts.jsp"/>
     </action-mappings>
     
