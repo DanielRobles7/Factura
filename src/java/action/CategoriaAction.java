@@ -76,8 +76,9 @@ public class CategoriaAction extends org.apache.struts.action.Action {
                 error = "complete los campos vacios ";
                 IR = MODIFICAR;
             } else {
-                if (cman.consultarExistencia(nombre) == 0 && !nombre.equals(cman.consultarId(idCategoria).getNombre())) {
-                    error = "no puede cambiar el nombre a (" + nombre + "); ya hay unac categoria llamada así";
+                if (cman.consultarExistencia(nombre) == 0 
+                        && !nombre.equals(cman.consultarId(idCategoria).getNombre())) {
+                    error = "no puede cambiar el nombre a (" + nombre + "); ya hay una categoria llamada así";
                     IR = MODIFICAR;
                 } else {
                 cman.modificar(idCategoria, nombre, descripcion);

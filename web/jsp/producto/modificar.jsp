@@ -135,41 +135,49 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="error" hidden="hidden"><html:errors/></div>
                         </div>
                     </div>
                 </html:form>
             </div>
         </div>
-    </div>
-    <div id="mensaje" hidden="hidden">${mensaje}</div>
-    <script type="text/javascript">
-        window.onload = function () {
-            if ($("#error").text() !== "") {
-                error();
+        <div id="mensaje" hidden="hidden">${mensaje}</div>
+        <div id="info" hidden="hidden" style="color:white">${info}</div>
+        <div id="error" hidden="hidden" style="color:white">${error}</div>
+        <script type="text/javascript">
+            window.onload = function () {
+                if ($("#error").text() !== "") {
+                    error();
+                }
+                if ($("#mensaje").text() !== "") {
+                    mensaje();
+                }
+                if ($("#info").text() !== "") {
+                    info();
+                }
+            };
+            toastr.options = {
+                "debug": false,
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 100,
+                "timeOut": 5000,
+                "extendedTimeOut": 1000};
+            var showToastrs = false;
+            function error() {
+                if (!showToastrs) {
+                    toastr.error($("#error").text(), 'Error');
+                }
             }
-            if ($("#mensaje").text() !== "") {
-                mensaje();
+            function mensaje() {
+                if (!showToastrs) {
+                    toastr.success($("#mensaje").text(), 'Confirmacion');
+                }
             }
-        };
-        toastr.options = {
-            "debug": false,
-            "onclick": null,
-            "fadeIn": 300,
-            "fadeOut": 100,
-            "timeOut": 5000,
-            "extendedTimeOut": 1000};
-        var showToastrs = false;
-        function error() {
-            if (!showToastrs) {
-                toastr.error($("#error").text(), 'Error');
+            function info() {
+                if (!showToastrs) {
+                    toastr.info($("#info").text(), 'Informacion');
+                }
             }
-        }
-        function mensaje() {
-            if (!showToastrs) {
-                toastr.success($("#mensaje").text(), 'Confirmacion');
-            }
-        }
-    </script>
+        </script>
 </body>
 </html>

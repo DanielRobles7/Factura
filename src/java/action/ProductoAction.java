@@ -6,6 +6,7 @@
 package action;
 
 import actionForm.ProductoActionForm;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import mantenimiento.CategoriaMan;
@@ -13,6 +14,7 @@ import mantenimiento.ProductoMan;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import persistencia.Categoria;
 import persistencia.Producto;
 
 /**
@@ -41,6 +43,8 @@ public class ProductoAction extends org.apache.struts.action.Action {
 
         String IR = null;
         String msg = null;
+        String error = null;
+        String info = null;
         ProductoMan pman = new ProductoMan();
         CategoriaMan cman = new CategoriaMan();
         Producto p;
@@ -54,29 +58,76 @@ public class ProductoAction extends org.apache.struts.action.Action {
         System.out.println("idCategoria = " + idCategoria);
 
         if (action.equalsIgnoreCase("nuevo")) {
-            bean.setListaCategoria(cman.consultarTodos());
+            List<Categoria> lc = cman.consultarTodos();
+            if (lc.isEmpty()) {
+                info = "La lista está vacia ";
+            } else {
+                bean.setListaCategoria(lc);
+            }
             IR = GUARDAR;
         }
 
         if (action.equalsIgnoreCase("guardar")) {
-            pman.guardar(nombre, precio, stock, idCategoria);
-            msg = "Producto " + nombre + " guardado";
-            bean.setListaProducto(pman.consultarTodos());
-            IR = LISTA;
+            if (nombre.equals("")
+                    || precio <= 0
+                    || stock <= 0
+                    || idCategoria <= 0
+                    || idCategoria == null) {
+                bean.setListaCategoria(cman.consultarTodos());
+                error = "complete los campos vacios ";
+                IR = GUARDAR;
+            } else {
+                if (pman.consultarExistencia(nombre) == 0) {
+                    error = "ya existe una Producto registrado como (" + nombre + ")";
+                    bean.setListaCategoria(cman.consultarTodos());
+                    IR = GUARDAR;
+                } else {
+                    pman.guardar(nombre, precio, stock, idCategoria);
+                    msg = "Producto " + nombre + " guardado";
+                    bean.setListaProducto(pman.consultarTodos());
+                    IR = LISTA;
+                }
+            }
         }
 
         if (action.equalsIgnoreCase("modificar")) {
-            pman.modificar(idProducto, nombre, precio, stock, idCategoria);
-            msg = "Categoria " + nombre + " modificados";
-            bean.setListaProducto(pman.consultarTodos());
-            IR = LISTA;
+            if (nombre.equals("")
+                    || precio <= 0
+                    || stock <= 0
+                    || idCategoria <= 0
+                    || idCategoria == null) {
+                bean.setListaCategoria(cman.consultarTodos());
+                error = "complete los campos vacios ";
+                IR = MODIFICAR;
+            } else {
+                if (pman.consultarExistencia(nombre) == 0
+                        && !nombre.equals(pman.consultarId(idProducto).getNombre())) {
+                    error = "no puede cambiar el nombre a (" + nombre + "); ya hay un producto registrado así";
+                    bean.setListaCategoria(cman.consultarTodos());
+                    IR = MODIFICAR;
+                } else {
+                    pman.modificar(idProducto, nombre, precio, stock, idCategoria);
+                    msg = "Categoria " + nombre + " modificados";
+                    bean.setListaProducto(pman.consultarTodos());
+                    IR = LISTA;
+                }
+            }
         }
 
         if (action.equalsIgnoreCase("eliminar")) {
             nombre = pman.consultarId(idProducto).getNombre();
-            pman.eliminar(idProducto);
-            msg = "Producto " + nombre + " eliminado";
-            bean.setListaProducto(pman.consultarTodos());
+            int v = pman.eliminar(idProducto);
+            if (v == 1) {
+                msg = "Producto " + nombre + " eliminado";
+            }else {
+                error = "Producto (" + nombre + ") no puede eliminarse, esta siendo utilizado en otra area";
+            }
+             List<Producto> lp = pman.consultarTodos();
+            if (lp.isEmpty()) {
+                info = "La lista está vacia ";
+            } else {
+                bean.setListaProducto(lp);
+            }
             IR = LISTA;
         }
 
@@ -92,10 +143,17 @@ public class ProductoAction extends org.apache.struts.action.Action {
         }
 
         if (action.equalsIgnoreCase("consultar")) {
-            bean.setListaProducto(pman.consultarTodos());
+            List<Producto> lp = pman.consultarTodos();
+            if (lp.isEmpty()) {
+                info = "La lista está vacia ";
+            } else {
+                bean.setListaProducto(lp);
+            }
             IR = LISTA;
         }
 
+        request.setAttribute("error", error);
+        request.setAttribute("info", info);
         request.setAttribute("mensaje", msg);
         return mapping.findForward(IR);
     }

@@ -135,7 +135,7 @@
             </div>
         </div>
         <div id="mensaje" hidden="hidden">${mensaje}</div>
-        <div id="info" style="color:white">${info}</div>
+        <div id="info" hidden="hidden" hidden="hidden" style="color:white">${info}</div>
         <script type="text/javascript">
             window.onload = function () {
                 if ($("#error").text() !== "") {

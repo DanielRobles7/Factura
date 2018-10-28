@@ -127,15 +127,13 @@
                                 </logic:iterate>
                             </logic:notEmpty>
                         </tbody>
-                        <html:form>
-                            <div id="error" hidden="hidden"><html:errors/></div>
-                        </html:form>
                     </table>
                 </div>
             </div>
         </div>
         <div id="mensaje" hidden="hidden">${mensaje}</div>
-        <div id="info" style="color:white">${info}</div>
+        <div id="info" hidden="hidden" style="color:white">${info}</div>
+        <div id="error" hidden="hidden" style="color:white">${error}</div>
         <script type="text/javascript">
             window.onload = function () {
                 if ($("#error").text() !== "") {
