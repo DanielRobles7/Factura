@@ -219,3 +219,4 @@ public int call() {
 }*/
 }
 // f where f.factura.idFactura=:idFactura
+//https://code.i-harness.com/es/q/136812b
