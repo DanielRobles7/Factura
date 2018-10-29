@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="col-3">
                                     <div class="text-left"><label>Numero de Factura : </label></div>
-                                    <h2 class="text-center" style="color: red">00000${num}</h2>
+                                    <h2 class="text-center" style="color: red">JAVA000${num}</h2>
                                     <div class="text-left"><label >Fecha : </label></div>
                                     <html:text property="fechaFactura" styleClass="form-control"></html:text>
                                     </div>

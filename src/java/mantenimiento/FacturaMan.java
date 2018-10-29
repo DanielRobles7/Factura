@@ -7,6 +7,7 @@ package mantenimiento;
 
 import com.myapp.struts.HibernateUtil;
 import java.util.List;
+import javax.persistence.StoredProcedureQuery;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +20,7 @@ import persistencia.ModoPago;
  * @author DanyDanny
  */
 public class FacturaMan {
-    
+
     public int guardar(
             Integer idCliente,
             String fechaFactura,
@@ -42,8 +43,7 @@ public class FacturaMan {
         ModoPago mod = new ModoPago();
         mod.setIdPago(idPago);
         fac.setModoPago(mod);
-        
-        
+
         try {
             session.beginTransaction();
             session.save(fac);
@@ -86,7 +86,7 @@ public class FacturaMan {
         ModoPago mod = new ModoPago();
         mod.setIdPago(idPago);
         fac.setModoPago(mod);
-        
+
         try {
             session.beginTransaction();
             session.update(fac);
@@ -104,13 +104,13 @@ public class FacturaMan {
         }
         return flag;
     }
-    
+
     public int eliminar(Integer idFactura) {
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
         int flag = 0;
         Factura fac;
-        
+
         try {
             session.beginTransaction();
             fac = (Factura) session.get(Factura.class, idFactura);
@@ -129,6 +129,7 @@ public class FacturaMan {
         }
         return flag;
     }
+
     public List consultarTodos() {
         List<Factura> listaFactura = null;
         SessionFactory factory = HibernateUtil.getSessionFactory();
@@ -142,10 +143,11 @@ public class FacturaMan {
         } catch (Exception e) {
             System.out.println("Error en consultarTodo Factura man " + e);
         } finally {
-             //session.close();           
+            //session.close();           
         }
         return listaFactura;
     }
+
     public Factura consultarId(Integer idFactura) {
         Factura fac = null;
         SessionFactory factory = HibernateUtil.getSessionFactory();
@@ -155,7 +157,7 @@ public class FacturaMan {
             session.beginTransaction();
             fac = (Factura) session.get(Factura.class, idFactura);
             System.out.println("Consultar por Id Correcto Factura man");
-                        session.getTransaction().commit();
+            session.getTransaction().commit();
         } catch (Exception e) {
             if (session.getTransaction().isActive()) {
                 session.getTransaction().rollback();
@@ -167,34 +169,51 @@ public class FacturaMan {
         }
         return fac;
     }
+
     public List maxFactura() {
-         List<Factura> listaI = null;
+        List<Factura> listaI = null;
         SessionFactory factory = HibernateUtil.getSessionFactory();
         Session session = factory.openSession();
-       
+
         session.beginTransaction();
         try {
-             Query q   =  session.createQuery("select max(idFactura) from Factura");
-         listaI = (List<Factura>) q.list();
+            Query q = session.createQuery("select max(idFactura) from Factura");
+            listaI = (List<Factura>) q.list();
             System.out.println(listaI.get(0));
             System.out.println("Consultar max Factura Correcto");
         } catch (Exception e) {
-            System.out.println("Error consultar max id Factura. "+e);
+            System.out.println("Error consultar max id Factura. " + e);
         } finally {
             session.close();
         }
-        
-        return listaI ;
+
+        return listaI;
     }
-    public int maxIdFactura(){
+
+    public int maxIdFactura() {
         FacturaMan fmam = new FacturaMan();
-        int idFactura = 0; 
+        int idFactura = 0;
         List<Factura> fe = fmam.consultarTodos();
-        if (fe.size()>0) {
+        if (fe.size() > 0) {
             List<Integer> lista = fmam.maxFactura();
-        idFactura = lista.get(0);
+            idFactura = lista.get(0);
         }
         return idFactura;
     }
+public int call() {
+    StoredProcedureQuery query = 
     
+                .createStoredProcedureQuery("count_comments")
+                .registerStoredProcedureParameter(
+                        "postId", Long.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(
+                        "commentCount", Long.class, ParameterMode.OUT)
+                .setParameter("postId", 1L);
+
+    query.execute ();
+
+    Long commentCount = (Long) query
+            .getOutputParameterValue("commentCount");
 }
+}
+f where f.factura.idFactura=:idFactura

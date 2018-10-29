@@ -49,7 +49,7 @@ public class ModoPagoMan {
     }
 
     public int modificar(
-            Integer idModoPago,
+            Integer idPago,
             String nombreModoPago,
             String otrosDetalles
     ) {
@@ -58,7 +58,7 @@ public class ModoPagoMan {
         int flag = 0;
         ModoPago mod = new ModoPago();
 
-        mod.setIdPago(flag);
+        mod.setIdPago(idPago);
         mod.setNombreModoPago(nombreModoPago);
         mod.setOtrosDetalles(otrosDetalles);
         try {

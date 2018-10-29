@@ -84,7 +84,10 @@ public class FacturaAction extends org.apache.struts.action.Action {
         System.out.println("total = " + total);
 
         if (action.equalsIgnoreCase("nuevo")) {
-            idFactura = fman.maxIdFactura();
+            
+            System.out.println("ver la consulta " +fman.consultarTodos().size());
+   
+                idFactura = fman.maxIdFactura();
             f = fman.consultarId(idFactura);
             if (0==f.getTotalFactura()) {
                 bean.setIdCliente(f.getCliente().getIdCliente());
@@ -92,6 +95,10 @@ public class FacturaAction extends org.apache.struts.action.Action {
                 bean.setFechaFactura(f.getFechaFactura());
                 bean.setListaDetalle(dman.consultaDetalleEspecifico(idFactura));
                 info = "Factura Pendiente de Guardar";
+                request.setAttribute("num", idFactura);
+            }
+            else{
+                request.setAttribute("num", idFactura +1);
             }
             bean.setListaCliente(cman.consultarTodos());
             bean.setListaProducto(pman.consultarTodos());
@@ -161,7 +168,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             
             bean.setListaProducto(pman.consultarTodos());
             bean.setListaModoPago(mman.consultarTodos());
-            
+            request.setAttribute("num", idFactura);
             bean.setFechaFactura(fechaFactura);
 
             IR = GUARDAR;
@@ -193,7 +200,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             bean.setListaModoPago(mman.consultarTodos());
             bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
             bean.setFechaFactura(fechaFactura);
-
+            request.setAttribute("num", idFactura);
             IR = MODIFICAR;
         }
         if (action.equalsIgnoreCase("guardar")) {
@@ -248,6 +255,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             bean.setListaModoPago(mman.consultarTodos());
             bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
             bean.setFechaFactura(fman.consultarId(idFactura).getFechaFactura());
+            request.setAttribute("num", idFactura);
             IR = GUARDAR;
         }
         if (action.equalsIgnoreCase("x ")) {
@@ -276,6 +284,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             bean.setListaModoPago(mman.consultarTodos());
             bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
             bean.setFechaFactura(fman.consultarId(idFactura).getFechaFactura());
+            request.setAttribute("num", idFactura);
             IR = MODIFICAR;
         }
 
@@ -311,6 +320,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             bean.setListaModoPago(mman.consultarTodos());
             bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
             bean.setFechaFactura(fman.consultarId(idFactura).getFechaFactura());
+            request.setAttribute("num", idFactura);
             IR = MODIFICAR;
         }
 

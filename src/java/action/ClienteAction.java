@@ -90,8 +90,9 @@ public class ClienteAction extends org.apache.struts.action.Action {
                     }
                 }
             }
-
+        }
             if (action.equalsIgnoreCase("modificar")) {
+                System.out.println("en modificar");
                 if (nombreCliente.equals("")
                         || apellidoCliente.equals("")
                         || direccionCliente.equals("")
@@ -118,7 +119,7 @@ public class ClienteAction extends org.apache.struts.action.Action {
                     }
                 }
             }
-        }
+        
 
         if (action.equalsIgnoreCase("eliminar")) {
             nombreCliente = cman.consultarId(idCliente).getNombreCliente();

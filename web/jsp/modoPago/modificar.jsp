@@ -108,7 +108,7 @@
                                             <br>
                                         </div>
                                         <div class="text-center">
-                                        <html:submit property="action" value="Guardar" styleClass="btn btn-outline-dark" style="width: 100px"></html:submit>
+                                        <html:submit property="action" value="Modificar" styleClass="btn btn-outline-dark" style="width: 100px"></html:submit>
                                         <div id="error" hidden="hidden"><html:errors/></div>
                                     </div>
                                 </div>
