@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="col-2">
                                         <br>
-                                    <html:submit  property="action" value="Agregar" styleClass="btn  font-weight-bold " style="background-color:#000; color: white"></html:submit>
+                                    <html:submit  property="action" value="Agregar " styleClass="btn  font-weight-bold " style="background-color:#000; color: white"></html:submit>
                                     </div>
                                 </div>
                             </div>
@@ -221,6 +221,8 @@
             </div>
         </div>
         <div id="mensaje" hidden="hidden">${mensaje}</div>
+        <div id="info" hidden="hidden" style="color:white">${info}</div>
+        <div id="error" hidden="hidden" style="color:white">${error}</div>
         <script type="text/javascript">
             window.onload = function () {
                 if ($("#error").text() !== "") {
@@ -228,6 +230,9 @@
                 }
                 if ($("#mensaje").text() !== "") {
                     mensaje();
+                }
+                if ($("#info").text() !== "") {
+                    info();
                 }
             };
             toastr.options = {
@@ -246,6 +251,11 @@
             function mensaje() {
                 if (!showToastrs) {
                     toastr.success($("#mensaje").text(), 'Confirmacion');
+                }
+            }
+            function info() {
+                if (!showToastrs) {
+                    toastr.info($("#info").text(), 'Informacion');
                 }
             }
         </script>

@@ -58,6 +58,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
         SumarTotalFactura suma = new SumarTotalFactura();
         String IR = null;
         String msg = null;
+        String error = "";
         String info = null;
         FacturaMan fman = new FacturaMan();
         DetalleMan dman = new DetalleMan();
@@ -83,6 +84,15 @@ public class FacturaAction extends org.apache.struts.action.Action {
         System.out.println("total = " + total);
 
         if (action.equalsIgnoreCase("nuevo")) {
+            idFactura = fman.maxIdFactura();
+            f = fman.consultarId(idFactura);
+            if (0==f.getTotalFactura()) {
+                bean.setIdCliente(f.getCliente().getIdCliente());
+                bean.setIdPago(f.getModoPago().getIdPago());
+                bean.setFechaFactura(f.getFechaFactura());
+                bean.setListaDetalle(dman.consultaDetalleEspecifico(idFactura));
+                info = "Factura Pendiente de Guardar";
+            }
             bean.setListaCliente(cman.consultarTodos());
             bean.setListaProducto(pman.consultarTodos());
             bean.setListaModoPago(mman.consultarTodos());
@@ -91,28 +101,77 @@ public class FacturaAction extends org.apache.struts.action.Action {
         }
 
         if (action.equalsIgnoreCase("agregar")) {
-            idPago = 1;
+            if (idPago <=0) {
+                error += "seleccione un Modo de Pago, ";
+            }
+            if (idCliente <=0) {
+                error +="seleccione un Cliente, ";
+            }
+            if (idProducto <= 0) {
+                error += "seleccione un Producto, ";
+            }
+            if (cantidad <= 0) {
+                error += "seleccione una Cantidad mayor a cero ";
+            }
+            if (error.equals("")) {
+
+//evitar duplicado en factura
+                List<Factura> lf = fman.consultarTodos();
+
+                if (lf.isEmpty()) {
+                    fman.guardar(idCliente, fechaFactura, idPago, 0.0);
+                    System.out.println("se creo factura porq no existia");
+                } else {
+                    idFactura = fman.maxIdFactura();
+                    totalFactura = fman.consultarId(idFactura).getTotalFactura();
+                    System.out.println("totalFactura trae = " + totalFactura);
+                    if (totalFactura > 0 || lf.size() < 2) {
+                        fman.guardar(idCliente, fechaFactura, idPago, 0.0);
+                    }
+                }
+                idFactura = fman.maxIdFactura();
+                bean.setIdCliente(fman.consultarId(idFactura).getCliente().getIdCliente());
+                bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
+//total detalle 
+                if (idProducto > 0) {
+                    total = pman.consultarId(idProducto).getPrecio() * cantidad;
+                    int v = dman.guardar(idFactura, idProducto, cantidad, precio, total);
+
+                    if (v == 1) {
+                        msg = "Detalle Agregado";
+                    }
+                }
+
+            }
+//------------------------------------------------------------------------------------------            
 //fecha            
             if (fechaFactura.equals("")) {
                 fechaFactura = formato.format(new Date());
             }
             bean.setFechaFactura(fechaFactura);
 
-//evitar duplicado en factura
-            List<Factura> lf = fman.consultarTodos();
+// calcular totalFactura
+            totalFactura = suma.sumarTotalFactura(idFactura);
+            request.setAttribute("totalFactura", totalFactura);
+// listaDetalle
+                List<Detalle> listaDetalle = dman.consultaDetalleEspecifico(idFactura);
+                bean.setListaDetalle(listaDetalle);
+//para cargar la factura
+            bean.setListaCliente(cman.consultarTodos());
+            
+            bean.setListaProducto(pman.consultarTodos());
+            bean.setListaModoPago(mman.consultarTodos());
+            
+            bean.setFechaFactura(fechaFactura);
 
-            if (lf.isEmpty()) {
-                fman.guardar(idCliente, fechaFactura, idPago, 0.0);
-                System.out.println("se creo factura porq no existia");
-            } else {
-                idFactura = fman.maxIdFactura();
-                totalFactura = fman.consultarId(idFactura).getTotalFactura();
-                System.out.println("totalFactura trae = " + totalFactura);
-                if (totalFactura > 0 || lf.size() < 2) {
-                    fman.guardar(idCliente, fechaFactura, idPago, 0.0);
-                }
+            IR = GUARDAR;
+        }
+        if (action.equalsIgnoreCase("agregar ")) {
+//fecha            
+            if (fechaFactura.equals("")) {
+                fechaFactura = formato.format(new Date());
             }
-            idFactura = fman.maxIdFactura();
+            bean.setFechaFactura(fechaFactura);
 
 //total detalle            
             total = pman.consultarId(idProducto).getPrecio() * cantidad;
@@ -129,17 +188,18 @@ public class FacturaAction extends org.apache.struts.action.Action {
             bean.setListaDetalle(listaDetalle);
 //para cargar la factura
             bean.setListaCliente(cman.consultarTodos());
+            bean.setIdCliente(fman.consultarId(idFactura).getCliente().getIdCliente());
             bean.setListaProducto(pman.consultarTodos());
             bean.setListaModoPago(mman.consultarTodos());
             bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
             bean.setFechaFactura(fechaFactura);
 
-            IR = GUARDAR;
+            IR = MODIFICAR;
         }
         if (action.equalsIgnoreCase("guardar")) {
             idFactura = fman.maxIdFactura();
 // calcular totalFactura
-            totalFactura = suma.sumarTotalFactura(idFactura);            
+            totalFactura = suma.sumarTotalFactura(idFactura);
 //modificar FacturaEncabezado ya que se creo en agregar.             
             f = fman.consultarId(idFactura);
             idCliente = f.getCliente().getIdCliente();
@@ -152,7 +212,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
         }
         if (action.equalsIgnoreCase("Actualizar")) {
 // calcular totalFactura
-            totalFactura = suma.sumarTotalFactura(idFactura);            
+            totalFactura = suma.sumarTotalFactura(idFactura);
 //modificar FacturaEncabezado ya que se creo en agregar.             
             f = fman.consultarId(idFactura);
             idCliente = f.getCliente().getIdCliente();
@@ -180,7 +240,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             request.setAttribute("totalFactura", totalFactura);
 // listaDetalle            
             List<Detalle> listaDetalle = dman.consultaDetalleEspecifico(idFactura);
-            bean.setListaDetalle(listaDetalle);            
+            bean.setListaDetalle(listaDetalle);
 //para cargar la factura
             bean.setListaCliente(cman.consultarTodos());
             bean.setIdCliente(fman.consultarId(idFactura).getCliente().getIdCliente());
@@ -191,7 +251,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             IR = GUARDAR;
         }
         if (action.equalsIgnoreCase("x ")) {
-            
+
 //modificar stock            
             idProducto = dman.consultarId(idDetalle).getProducto().getIdProducto();
             idFactura = dman.consultarId(idDetalle).getFactura().getIdFactura();
@@ -208,7 +268,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             request.setAttribute("totalFactura", totalFactura);
 // listaDetalle            
             List<Detalle> listaDetalle = dman.consultaDetalleEspecifico(idFactura);
-            bean.setListaDetalle(listaDetalle);            
+            bean.setListaDetalle(listaDetalle);
 //para cargar la factura
             bean.setListaCliente(cman.consultarTodos());
             bean.setIdCliente(fman.consultarId(idFactura).getCliente().getIdCliente());
@@ -220,13 +280,13 @@ public class FacturaAction extends org.apache.struts.action.Action {
         }
 
         if (action.equalsIgnoreCase("eliminar")) {
-            
+
             totalFactura = fman.consultarId(idFactura).getTotalFactura();
-            if (totalFactura >0) {
+            if (totalFactura > 0) {
                 info = "No se puede eliminar la factura, porque tiene un saldo de "
-                        +totalFactura;
-            }else{
-                msg = "Factura ID: "+idFactura+" Eliminada";
+                        + totalFactura;
+            } else {
+                msg = "Factura ID: " + idFactura + " Eliminada";
                 fman.eliminar(idFactura);
             }
             bean.setListaFactura(fman.consultarTodos());
@@ -243,14 +303,14 @@ public class FacturaAction extends org.apache.struts.action.Action {
             totalFactura = suma.sumarTotalFactura(idFactura);
             request.setAttribute("totalFactura", totalFactura);
 // listaDetalle            
-            bean.setListaDetalle(dman.consultaDetalleEspecifico(idFactura));            
+            bean.setListaDetalle(dman.consultaDetalleEspecifico(idFactura));
 //para cargar la factura
             bean.setListaCliente(cman.consultarTodos());
             bean.setIdCliente(fman.consultarId(idFactura).getCliente().getIdCliente());
             bean.setListaProducto(pman.consultarTodos());
             bean.setListaModoPago(mman.consultarTodos());
             bean.setIdPago(fman.consultarId(idFactura).getModoPago().getIdPago());
-            bean.setFechaFactura(fman.consultarId(idFactura).getFechaFactura());            
+            bean.setFechaFactura(fman.consultarId(idFactura).getFechaFactura());
             IR = MODIFICAR;
         }
 
@@ -260,6 +320,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
         }
 
         request.setAttribute("info", info);
+        request.setAttribute("error", error);
         request.setAttribute("mensaje", msg);
         return mapping.findForward(IR);
     }
