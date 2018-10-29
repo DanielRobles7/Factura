@@ -200,20 +200,22 @@ public class FacturaMan {
         }
         return idFactura;
     }
+    /*
 public int call() {
     StoredProcedureQuery query = 
+            
     
-                .createStoredProcedureQuery("count_comments")
-                .registerStoredProcedureParameter(
-                        "postId", Long.class, ParameterMode.IN)
-                .registerStoredProcedureParameter(
-                        "commentCount", Long.class, ParameterMode.OUT)
-                .setParameter("postId", 1L);
+//                .createStoredProcedureQuery("count_comments")
+//                .registerStoredProcedureParameter(
+//                        "postId", Long.class, ParameterMode.IN)
+//                .registerStoredProcedureParameter(
+//                        "commentCount", Long.class, ParameterMode.OUT)
+//                .setParameter("postId", 1L);
 
     query.execute ();
 
     Long commentCount = (Long) query
             .getOutputParameterValue("commentCount");
+}*/
 }
-}
-f where f.factura.idFactura=:idFactura
+// f where f.factura.idFactura=:idFactura
