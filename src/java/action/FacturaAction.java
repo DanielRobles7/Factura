@@ -84,21 +84,20 @@ public class FacturaAction extends org.apache.struts.action.Action {
         System.out.println("total = " + total);
 
         if (action.equalsIgnoreCase("nuevo")) {
-            
-            System.out.println("ver la consulta " +fman.consultarTodos().size());
-   
-                idFactura = fman.maxIdFactura();
+
+            System.out.println("ver la consulta " + fman.consultarTodos().size());
+
+            idFactura = fman.maxIdFactura();
             f = fman.consultarId(idFactura);
-            if (0==f.getTotalFactura()) {
+            if (0 == f.getTotalFactura()) {
                 bean.setIdCliente(f.getCliente().getIdCliente());
                 bean.setIdPago(f.getModoPago().getIdPago());
                 bean.setFechaFactura(f.getFechaFactura());
                 bean.setListaDetalle(dman.consultaDetalleEspecifico(idFactura));
                 info = "Factura Pendiente de Guardar";
                 request.setAttribute("num", idFactura);
-            }
-            else{
-                request.setAttribute("num", idFactura +1);
+            } else {
+                request.setAttribute("num", idFactura + 1);
             }
             bean.setListaCliente(cman.consultarTodos());
             bean.setListaProducto(pman.consultarTodos());
@@ -108,11 +107,11 @@ public class FacturaAction extends org.apache.struts.action.Action {
         }
 
         if (action.equalsIgnoreCase("agregar")) {
-            if (idPago <=0) {
+            if (idPago <= 0) {
                 error += "seleccione un Modo de Pago, ";
             }
-            if (idCliente <=0) {
-                error +="seleccione un Cliente, ";
+            if (idCliente <= 0) {
+                error += "seleccione un Cliente, ";
             }
             if (idProducto <= 0) {
                 error += "seleccione un Producto, ";
@@ -161,11 +160,11 @@ public class FacturaAction extends org.apache.struts.action.Action {
             totalFactura = suma.sumarTotalFactura(idFactura);
             request.setAttribute("totalFactura", totalFactura);
 // listaDetalle
-                List<Detalle> listaDetalle = dman.consultaDetalleEspecifico(idFactura);
-                bean.setListaDetalle(listaDetalle);
+            List<Detalle> listaDetalle = dman.consultaDetalleEspecifico(idFactura);
+            bean.setListaDetalle(listaDetalle);
 //para cargar la factura
             bean.setListaCliente(cman.consultarTodos());
-            
+
             bean.setListaProducto(pman.consultarTodos());
             bean.setListaModoPago(mman.consultarTodos());
             request.setAttribute("num", idFactura);
@@ -215,6 +214,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             fman.modificar(idFactura, idCliente, fechaFactura, idPago, totalFactura);
 //llenado de la lista
             bean.setListaFactura(fman.consultarTodos());
+            bean.setListaCliente(cman.consultarTodos());
             IR = LISTA;
         }
         if (action.equalsIgnoreCase("Actualizar")) {
@@ -228,6 +228,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
             fman.modificar(idFactura, idCliente, fechaFactura, idPago, totalFactura);
 //llenado de la lista
             bean.setListaFactura(fman.consultarTodos());
+            bean.setListaCliente(cman.consultarTodos());
             IR = LISTA;
         }
 
@@ -299,6 +300,7 @@ public class FacturaAction extends org.apache.struts.action.Action {
                 fman.eliminar(idFactura);
             }
             bean.setListaFactura(fman.consultarTodos());
+            bean.setListaCliente(cman.consultarTodos());
             IR = LISTA;
         }
         if (action.equalsIgnoreCase("detalle")) {
@@ -331,6 +333,32 @@ public class FacturaAction extends org.apache.struts.action.Action {
             } else {
                 bean.setListaFactura(lf);
             }
+            bean.setListaCliente(cman.consultarTodos());
+            IR = LISTA;
+        }
+        if (action.equalsIgnoreCase("consultar ")) {
+
+            System.out.println("prueba "+ fman.consultaFacturaCliente(idCliente));
+            if (idCliente == 0) {
+                // List<Factura> lf = fman.consultarTodos();
+                if (fman.consultarTodos()==null) {
+                    info = "La lista está vacia ";
+                } else {
+                    bean.setListaFactura(fman.consultarTodos());
+                }
+            } else {
+                if (idCliente != null) {
+                    List<Factura> lf = fman.consultaFacturaCliente(idCliente);
+                    if (lf.isEmpty()) {
+                        info = "No hay Facturas para ese Cliente ";
+                    } else {
+                        bean.setListaFactura(lf);
+                    }
+                } else {
+                    info = "No hay Facturas para ese Cliente ";
+                }
+            }
+            bean.setListaCliente(cman.consultarTodos());
             IR = LISTA;
         }
 

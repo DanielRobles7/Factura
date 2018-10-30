@@ -87,7 +87,24 @@
             <div class="row" >
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-9"><h1 class="text-center" style="padding: 10px; font-weight: bold; ">Lista de Facturas</h1></div>
+                        <div class="col-4" style="padding: 20px;">
+                            <html:form>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <html:select property="idCliente" styleClass="form-control" style="width: 240px">
+                                        <html:option value="Todas las Facturas"></html:option>
+                                        <logic:notEmpty name="FacturaActionForm" property="listaCliente">
+                                            <logic:iterate id="ver" name="FacturaActionForm" property="listaCliente">
+                                                <html:option value="${ver.idCliente}" >${ver.nombreCliente}</html:option>
+                                            </logic:iterate>
+                                        </logic:notEmpty>
+                                    </html:select>
+                                    </div>
+                                    <div class="col-4"><html:submit property="action" value="Consultar " styleClass="btn btn-outline-dark" style="width: 100px"></html:submit></div>
+                                </div>
+                            </html:form>
+                        </div>
+                        <div class="col-5"><h1 class="text-center" style="padding: 10px; font-weight: bold; ">Lista de Facturas</h1></div>
                         <div class="col-3">
                             <div class="text-right" style="padding: 20px"><a class="btn btn-outline-dark" href="modoPago.do?action=Consultar" style="width: 150px">Modos de Pago</a></div>
                         </div>

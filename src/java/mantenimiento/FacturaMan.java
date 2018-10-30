@@ -8,6 +8,7 @@ package mantenimiento;
 import com.myapp.struts.HibernateUtil;
 import java.util.List;
 import javax.persistence.StoredProcedureQuery;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -200,23 +201,30 @@ public class FacturaMan {
         }
         return idFactura;
     }
-    /*
-public int call() {
-    StoredProcedureQuery query = 
-            
-    
-//                .createStoredProcedureQuery("count_comments")
-//                .registerStoredProcedureParameter(
-//                        "postId", Long.class, ParameterMode.IN)
-//                .registerStoredProcedureParameter(
-//                        "commentCount", Long.class, ParameterMode.OUT)
-//                .setParameter("postId", 1L);
-
-    query.execute ();
-
-    Long commentCount = (Long) query
-            .getOutputParameterValue("commentCount");
-}*/
+    public List consultaFacturaCliente (Integer idCliente){
+        SessionFactory factory = HibernateUtil.getSessionFactory();
+        Session session = factory.openSession();
+        try {
+            session.beginTransaction();
+            Query q = session.createQuery("from Factura f where f.cliente.idCliente=:idCliente");
+            q.setParameter("idCliente", idCliente);
+            List<Factura> list = q.list();
+            if (list.size()>0) {
+                return list;
+            }
+            session.close();
+            return null;
+        } catch (HibernateException e) {
+            session.close();
+            System.out.println("Error en consultar Detalle "+e);
+            return null;
+        }
+    }
+    public static void main(String[] args) {
+        FacturaMan dman = new FacturaMan();
+        List<Factura> ld = dman.consultaFacturaCliente(3);
+        System.out.println("ver "+ld.toString());
+    }
 }
 // f where f.factura.idFactura=:idFactura
 //https://code.i-harness.com/es/q/136812b
