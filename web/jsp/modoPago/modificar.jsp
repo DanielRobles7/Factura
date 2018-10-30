@@ -109,7 +109,7 @@
                                         </div>
                                         <div class="text-center">
                                         <html:submit property="action" value="Modificar" styleClass="btn btn-outline-dark" style="width: 100px"></html:submit>
-                                        <div id="error" hidden="hidden"><html:errors/></div>
+                                        <html:submit property="action" value="Consultar" styleClass="btn btn-outline-dark" style="width: 100px"></html:submit>
                                     </div>
                                 </div>
                             </div>

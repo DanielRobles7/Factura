@@ -32,16 +32,6 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
                                            aria-haspopup="true" aria-expanded="false" style = 'color: white'> 
-                                            Categorias
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                                            <a class="dropdown-item " href="categoria.do?action=nuevo">Agregar Categoria</a>
-                                            <a class="dropdown-item" href="categoria.do?action=consultar">Consultar Categorias</a>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
-                                           aria-haspopup="true" aria-expanded="false" style = 'color: white'> 
                                             Clientes
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
@@ -62,16 +52,6 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
                                            aria-haspopup="true" aria-expanded="false" style = 'color: white'> 
-                                            Modos de Pago
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                                            <a class="dropdown-item" href="modoPago.do?action=nuevo">Agregar Modo de Pago</a>
-                                            <a class="dropdown-item" href="modoPago.do?action=Consultar">Consultar Modos de Pago</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
-                                           aria-haspopup="true" aria-expanded="false" style = 'color: white'> 
                                             Productos
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
@@ -85,10 +65,8 @@
                                             Consultas
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                                            <a class="dropdown-item" href="categoria.do?action=consultar">Categorias</a>
                                             <a class="dropdown-item" href="cliente.do?action=Consultar">Clientes</a>
                                             <a class="dropdown-item" href="factura.do?action=Consultar">Facturas</a>
-                                            <a class="dropdown-item" href="modoPago.do?action=Consultar">Modos de Pago</a>
                                             <a class="dropdown-item" href="producto.do?action=Consultar">Productos</a>
                                         </div>
                                     </li>
@@ -96,7 +74,13 @@
                             </div>
                         </nav>
                     </div>
-                    <h1>Inicio</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-center" style="padding: 10px; font-weight: bold;">Prueba Diagnóstica</h1>
                 </div>
             </div>
         </div>

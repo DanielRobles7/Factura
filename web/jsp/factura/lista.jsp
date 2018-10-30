@@ -86,7 +86,12 @@
         <div class="container">
             <div class="row" >
                 <div class="col-12">
-                    <h1 class="text-center" style="padding: 10px; font-weight: bold; ">Lista de Facturas</h1>
+                    <div class="row">
+                        <div class="col-9"><h1 class="text-center" style="padding: 10px; font-weight: bold; ">Lista de Facturas</h1></div>
+                        <div class="col-3">
+                            <div class="text-right" style="padding: 20px"><a class="btn btn-outline-dark" href="modoPago.do?action=Consultar" style="width: 150px">Modos de Pago</a></div>
+                        </div>
+                    </div>
                     <table class="table table-hover table-dark">
                         <thead >
                             <tr class="text-center" >

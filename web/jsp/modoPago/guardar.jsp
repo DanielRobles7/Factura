@@ -104,6 +104,7 @@
                                         </div>
                                             <div class="text-center">
                                         <html:submit property="action" value="Guardar" styleClass="btn btn-outline-dark" style="width: 100px"></html:submit>
+                                        <html:submit property="action" value="Consultar" styleClass="btn btn-outline-dark" style="width: 100px"></html:submit>
                                         </div>
                                     </div>
                                 </div>

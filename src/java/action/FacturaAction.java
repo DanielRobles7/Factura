@@ -325,7 +325,12 @@ public class FacturaAction extends org.apache.struts.action.Action {
         }
 
         if (action.equalsIgnoreCase("consultar")) {
-            bean.setListaFactura(fman.consultarTodos());
+            List<Factura> lf = fman.consultarTodos();
+            if (lf.isEmpty()) {
+                info = "La lista está vacia ";
+            } else {
+                bean.setListaFactura(lf);
+            }
             IR = LISTA;
         }
 
